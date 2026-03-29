@@ -1,27 +1,296 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Form</title>
+    <title>芭樂銷售訂單表單</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        
+        .price-info {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .price-info p {
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .price-info strong {
+            color: #667eea;
+            font-size: 16px;
+        }
+        
+        .total-price {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 2px solid #ffc107;
+        }
+        
+        .total-price p {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .total-price h2 {
+            color: #ff6b6b;
+            font-size: 24px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
+        
+        .order-summary {
+            display: none;
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #b3d9ff;
+        }
+        
+        .order-summary h3 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .order-summary p {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-    <h1>Order Form</h1>
-    <form action="/submit-order" method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
+    <div class="container">
+        <h1>🍌 芭樂銷售訂單</h1>
         
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
+        <div class="price-info">
+            <p><strong>💰 價格：</strong></p>
+            <p>✓ 1份 = 60元</p>
+            <p>✓ 2份 = 100元</p>
+        </div>
         
-        <label for="product">Product:</label><br>
-        <select id="product" name="product" required>
-            <option value="product1">Product 1</option>
-            <option value="product2">Product 2</option>
-            <option value="product3">Product 3</option>
-        </select><br>
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="class">班級 *</label>
+                <input type="text" id="class" name="class" placeholder="例如：1年A班" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">姓名 *</label>
+                <input type="text" id="name" name="name" placeholder="請輸入姓名" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="seatNumber">座號 *</label>
+                <input type="number" id="seatNumber" name="seatNumber" placeholder="請輸入座號" min="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="quantity">購買份數 *</label>
+                <select id="quantity" name="quantity" required>
+                    <option value="">-- 請選擇 --</option>
+                    <option value="1">1份</option>
+                    <option value="2">2份</option>
+                    <option value="3">3份</option>
+                    <option value="4">4份</option>
+                    <option value="5">5份</option>
+                </select>
+            </div>
+            
+            <div class="total-price">
+                <p>應付金額</p>
+                <h2 id="totalPrice">$0</h2>
+            </div>
+            
+            <button type="submit">📝 提交訂單</button>
+        </form>
         
-        <input type="submit" value="Submit">
-    </form>
+        <div class="success-message" id="successMessage">
+            ✅ 訂單已提交成功！感謝您的購買！
+        </div>
+        
+        <div class="order-summary" id="orderSummary">
+            <h3>訂單詳情</h3>
+            <p><strong>班級：</strong><span id="summaryClass"></span></p>
+            <p><strong>姓名：</strong><span id="summaryName"></span></p>
+            <p><strong>座號：</strong><span id="summarySeatNumber"></span></p>
+            <p><strong>購買份數：</strong><span id="summaryQuantity"></span>份</p>
+            <p><strong>應付金額：</strong><span id="summaryPrice" style="color: #ff6b6b; font-weight: bold;"></span></p>
+        </div>
+    </div>
+    
+    <script>
+        const quantitySelect = document.getElementById('quantity');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        const orderForm = document.getElementById('orderForm');
+        const successMessage = document.getElementById('successMessage');
+        const orderSummary = document.getElementById('orderSummary');
+        
+        // 價格計算
+        function calculatePrice() {
+            const quantity = parseInt(quantitySelect.value) || 0;
+            let price = 0;
+            
+            if (quantity === 1) {
+                price = 60;
+            } else if (quantity === 2) {
+                price = 100;
+            } else if (quantity > 2) {
+                // 3份以上按比例計算：每份平均50元
+                price = 60 + (quantity - 1) * 50;
+            }
+            
+            totalPriceDisplay.textContent = `$${price}`;
+            return price;
+        }
+        
+        // 當份數改變時更新價格
+        quantitySelect.addEventListener('change', calculatePrice);
+        
+        // 表單提交
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const classValue = document.getElementById('class').value;
+            const nameValue = document.getElementById('name').value;
+            const seatValue = document.getElementById('seatNumber').value;
+            const quantityValue = quantitySelect.value;
+            const priceValue = totalPriceDisplay.textContent;
+            
+            // 更新訂單詳情顯示
+            document.getElementById('summaryClass').textContent = classValue;
+            document.getElementById('summaryName').textContent = nameValue;
+            document.getElementById('summarySeatNumber').textContent = seatValue;
+            document.getElementById('summaryQuantity').textContent = quantityValue;
+            document.getElementById('summaryPrice').textContent = priceValue;
+            
+            // 顯示成功訊息和訂單詳情
+            successMessage.style.display = 'block';
+            orderSummary.style.display = 'block';
+            
+            // 隱藏表單（可選）
+            // orderForm.style.display = 'none';
+            
+            // 3秒後可以清空表單或執行其他操作
+            setTimeout(() => {
+                // orderForm.reset();
+                // successMessage.style.display = 'none';
+                // orderSummary.style.display = 'none';
+            }, 3000);
+            
+            // 在控制台輸出訂單資訊（方便複製或查看）
+            console.log('訂單資訊：', {
+                班級: classValue,
+                姓名: nameValue,
+                座號: seatValue,
+                份數: quantityValue,
+                金額: priceValue
+            });
+        });
+    </script>
 </body>
 </html>
